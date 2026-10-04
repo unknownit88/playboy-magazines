@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react'
 import { MagazineCard } from '../components/MagazineCard'
 import { CatalogFilters } from '../components/CatalogFilters'
+import { MagazineGallery } from '../components/MagazineGallery'
+import { ViewModeToggle } from '../components/ViewModeToggle'
+import { useViewMode } from '../hooks/useViewMode'
 import { listPublicMagazines } from '../lib/magazineService'
 import { applyFilters, defaultFilters, type Filters } from '../lib/filters'
 import type { Magazine } from '../types'
@@ -10,6 +13,7 @@ export function PublicCatalog() {
   const [magazines, setMagazines] = useState<Magazine[]>([])
   const [error, setError] = useState<string | null>(null)
   const [filters, setFilters] = useState<Filters>(defaultFilters)
+  const [viewMode, setViewMode] = useViewMode()
   const visibleMagazines = applyFilters(magazines, filters)
 
   useEffect(() => {
@@ -28,14 +32,17 @@ export function PublicCatalog() {
       <p className="subtitle">{visibleMagazines.length} de {magazines.length} revistas públicas</p>
       {error && <p className="form__error">Erro: {error}</p>}
 
-      <CatalogFilters filters={filters} onChange={setFilters} showStatus={false} />
+      <div className="toolbar">
+        <CatalogFilters filters={filters} onChange={setFilters} showStatus={false} />
+        <ViewModeToggle mode={viewMode} onChange={setViewMode} />
+      </div>
 
       {magazines.length === 0 && !error && <p className="subtitle">Nenhuma revista pública ainda.</p>}
 
-      <div className="grid">
+      <MagazineGallery mode={viewMode}>
         {/* sem onDelete nem onTogglePublic: o card aparece só para leitura */}
         {visibleMagazines.map((m) => <MagazineCard key={m.id} magazine={m} />)}
-      </div>
+      </MagazineGallery>
     </div>
   )
 }

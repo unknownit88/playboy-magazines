@@ -4,9 +4,12 @@ import { Home } from './pages/Home'
 import { NotFound } from './pages/NotFound'
 import { PublicCatalog } from './pages/PublicCatalog'
 import { AgeGate } from './components/AgeGate'
+import { useTheme } from './hooks/useTheme'
 import './App.css'
 
 function App() {
+  const { theme, toggleTheme } = useTheme()
+
   return (
     <BrowserRouter>
       <AgeGate />
@@ -18,6 +21,14 @@ function App() {
           <NavLink to="/catalog">Minha coleção</NavLink>
           <NavLink to="/public">Catálogo Público</NavLink>
         </nav>
+        <button
+          type="button"
+          className="theme-toggle"
+          onClick={toggleTheme}
+          aria-label={theme === 'dark' ? 'Mudar para o tema claro' : 'Mudar para o tema escuro'}
+        >
+          {theme === 'dark' ? '☀' : '☾'}
+        </button>
       </header>
 
       <main>

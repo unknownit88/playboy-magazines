@@ -8,6 +8,9 @@ import { useSession } from '../hooks/useSession'
 import { supabase } from '../lib/supabase'
 import { addMagazine, deleteMagazine, listMyMagazines, removeCover, setMagazinePublic, updateMagazine, uploadCover, type NewMagazine } from '../lib/magazineService'
 import { CatalogFilters } from '../components/CatalogFilters'
+import { MagazineGallery } from '../components/MagazineGallery'
+import { ViewModeToggle } from '../components/ViewModeToggle'
+import { useViewMode } from '../hooks/useViewMode'
 import { applyFilters, defaultFilters, type Filters } from '../lib/filters'
 import type { Magazine } from '../types'
 
@@ -21,6 +24,7 @@ export function Catalog() {
   const [editingId, setEditingId] = useState<string | null>(null)
   const editingMagazine = magazines.find((m) => m.id === editingId)
   const [filters, setFilters] = useState<Filters>(defaultFilters)
+  const [viewMode, setViewMode] = useViewMode()
   const pendingMagazine = magazines.find((m) => m.id === pendingDeleteId)
 
   // Carrega as revistas do banco sempre que o usuário logado mudar.
@@ -138,17 +142,20 @@ export function Catalog() {
         <MagazineForm onSubmit={handleAdd} />
       </details>
 
-      <CatalogFilters filters={filters} onChange={setFilters} />
+      <div className="toolbar">
+        <CatalogFilters filters={filters} onChange={setFilters} />
+        <ViewModeToggle mode={viewMode} onChange={setViewMode} />
+      </div>
 
       {magazines.length > 0 && visibleMagazines.length === 0 && (
         <p className="subtitle">Nenhuma revista encontrada com estes filtros.</p>
       )}
 
-      <div className="grid">
+      <MagazineGallery mode={viewMode}>
         {visibleMagazines.map((magazine) => (
           <MagazineCard key={magazine.id} magazine={magazine} onDelete={setPendingDeleteId} onTogglePublic={handleTogglePublic} onEdit={(m) => setEditingId(m.id)} />
         ))}
-      </div>
+      </MagazineGallery>
 
       {editingMagazine && (
         <Modal onClose={() => setEditingId(null)}>

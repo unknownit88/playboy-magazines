@@ -1,21 +1,47 @@
 /* TOKENS: todas as cores e medidas ficam aqui, num lugar só.
-   Para mudar o visual do app inteiro, basta mexer nestas variáveis. */
+   O tema escuro é o padrão; [data-theme='light'] troca só os valores das variáveis. */
 :root {
   --bg: #000000;
-  --surface: #000000;
+  --surface: #0d0d0d;
   --surface-2: #1c1c1c;
+  --placeholder: #141414;
   --border: #262626;
   --border-strong: #3d3d3d;
   --text: #f2f2f2;
   --muted: #9a9a9a;
+  --accent: #ff6b8a;
   --danger: #e5484d;
   --danger-text: #ff8085;
+  --overlay: rgba(0, 0, 0, 0.7);
+  --overlay-strong: rgba(0, 0, 0, 0.97);
+  --hero-glow: #1a1a1a;
 
   --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --radius: 4px;
+  --radius: 8px;
   --header-h: 56px;
+  --gutter: clamp(1rem, 1.6vw, 1.75rem);
 
   color-scheme: dark;
+}
+
+/* Tema claro: o estilo da referência (fundo branco, texto escuro). */
+:root[data-theme='light'] {
+  --bg: #ffffff;
+  --surface: #f7f7f5;
+  --surface-2: #efefec;
+  --placeholder: #efefec;
+  --border: #e7e7e4;
+  --border-strong: #cfcfca;
+  --text: #111111;
+  --muted: #6b6b6b;
+  --accent: #d6336c;
+  --danger: #d92d20;
+  --danger-text: #b42318;
+  --overlay: rgba(255, 255, 255, 0.75);
+  --overlay-strong: rgba(255, 255, 255, 0.97);
+  --hero-glow: #f1f1ee;
+
+  color-scheme: light;
 }
 
 /* RESET: remove as diferenças de estilo padrão entre navegadores. */
@@ -35,4 +61,4 @@ img { max-width: 100%; }
 button, input, select { font: inherit; color: inherit; }
 
 /* Só aparece ao navegar pelo teclado (Tab): essencial para acessibilidade. */
-:focus-visible { outline: 1px solid var(--text); outline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }

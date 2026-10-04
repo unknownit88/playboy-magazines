@@ -11,49 +11,46 @@ interface MagazineCardProps {
 }
 
 export function MagazineCard({ magazine, onDelete, onEdit, onTogglePublic }: MagazineCardProps) {
-  const hasActions = onTogglePublic || onEdit || onDelete
+  const isOwnerView = Boolean(onTogglePublic || onEdit || onDelete)
+
+  const date = magazine.year
+    ? `${magazine.month ? `${String(magazine.month).padStart(2, '0')}/` : ''}${magazine.year}`
+    : null
+  const meta = [magazine.issue && `Nº ${magazine.issue}`, date].filter(Boolean).join(' · ')
 
   return (
     <article className={magazine.acquired ? 'card' : 'card card--missing'}>
-      {magazine.cover_image_url ? (
-        // loading="lazy": o navegador só baixa a imagem quando ela está perto de aparecer
-        <img className="card__cover" src={magazine.cover_image_url} alt={`Capa de ${magazine.title}`} loading="lazy" />
-      ) : (
-        <div className="card__cover card__cover--empty">Sem capa</div>
-      )}
-
-      <div className="card__body">
-        <h2>{magazine.title}</h2>
-        {(magazine.issue || magazine.year) && (
-          <p className="card__date">
-            {[
-              magazine.issue && `Nº ${magazine.issue}`,
-              magazine.year && `${magazine.month ? `${String(magazine.month).padStart(2, '0')}/` : ''}${magazine.year}`,
-            ].filter(Boolean).join(' · ')}
-          </p>
-        )}
-        {magazine.cover_model && <p className="card__meta">Capa: {magazine.cover_model}</p>}
-        {magazine.condition && <p className="card__meta">Condição: {magazine.condition}</p>}
-
-        <div className="card__badges">
-          <span className="badge">{magazine.acquired ? 'Na coleção' : 'Procurando'}</span>
-          {magazine.is_public && <span className="badge badge--on">Pública</span>}
-        </div>
-
-        {hasActions && (
-          <div className="card__actions">
-            {onTogglePublic && (
-              <button className="card__action" onClick={() => onTogglePublic(magazine)}>
-                {magazine.is_public ? 'Tornar privada' : 'Tornar pública'}
-              </button>
-            )}
-            {onEdit && <button className="card__action" onClick={() => onEdit(magazine)}>Editar</button>}
-            {onDelete && (
-              <button className="card__action btn--danger" onClick={() => onDelete(magazine.id)}>Deletar</button>
-            )}
-          </div>
+      <div className="card__media">
+        {magazine.cover_image_url ? (
+          // loading="lazy": o navegador só baixa a imagem quando ela está perto de aparecer
+          <img className="card__cover" src={magazine.cover_image_url} alt={`Capa de ${magazine.title}`} loading="lazy" />
+        ) : (
+          <div className="card__placeholder">Sem capa</div>
         )}
       </div>
+
+      <h2 className="card__title">{magazine.title}</h2>
+      {meta && <p className="card__meta">{meta}</p>}
+      {magazine.cover_model && <p className="card__meta">Capa: {magazine.cover_model}</p>}
+      {magazine.condition && <p className="card__meta">Condição: {magazine.condition}</p>}
+
+      {/* Só mostra etiqueta quando ela INFORMA algo: "Procurando" e, para o dono, "Pública". */}
+      {(!magazine.acquired || (isOwnerView && magazine.is_public)) && (
+        <p className="card__tags">
+          {!magazine.acquired && <span className="tag">Procurando</span>}
+          {isOwnerView && magazine.is_public && <span className="tag tag--accent">Pública</span>}
+        </p>
+      )}
+
+      {isOwnerView && (
+        <div className="card__actions">
+          {onTogglePublic && (
+            <button onClick={() => onTogglePublic(magazine)}>{magazine.is_public ? 'Tornar privada' : 'Tornar pública'}</button>
+          )}
+          {onEdit && <button onClick={() => onEdit(magazine)}>Editar</button>}
+          {onDelete && <button className="btn--danger" onClick={() => onDelete(magazine.id)}>Deletar</button>}
+        </div>
+      )}
     </article>
   )
 }
