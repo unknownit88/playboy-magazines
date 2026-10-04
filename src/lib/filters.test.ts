@@ -129,6 +129,22 @@ describe('applyFilters', () => {
     })
   })
 
+  describe('revistas sem ano', () => {
+    const list = [
+      makeMagazine({ title: 'Sem ano', year: null, month: null }),
+      makeMagazine({ title: 'Antiga', year: 1990, month: 3 }),
+      makeMagazine({ title: 'Nova', year: 2010, month: 6 }),
+    ]
+
+    it('vão para o fim ao ordenar por ano, mais novas primeiro', () => {
+      expect(titles(applyFilters(list, filters({ sort: 'ano-desc' })))).toEqual(['Nova', 'Antiga', 'Sem ano'])
+    })
+
+    it('vão para o fim também ao ordenar por ano, mais antigas primeiro', () => {
+      expect(titles(applyFilters(list, filters({ sort: 'ano-asc' })))).toEqual(['Antiga', 'Nova', 'Sem ano'])
+    })
+  })
+
   describe('imutabilidade', () => {
     it('não altera a lista original ao ordenar', () => {
       const list = [makeMagazine({ title: 'B', year: 2000 }), makeMagazine({ title: 'A', year: 1990 })]

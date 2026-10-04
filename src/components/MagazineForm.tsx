@@ -18,12 +18,12 @@ const conditions: Magazine['condition'][] = ['Excelente', 'Bom', 'Regular', 'Rui
 export function MagazineForm({ onSubmit, initial, onCancel }: MagazineFormProps) {
   // Cada campo do formulário é um estado: quando muda, a tela é redesenhada.
   const [title, setTitle] = useState(initial?.title ?? '')
-  const [year, setYear] = useState(initial?.year ?? 2000)
-  const [month, setMonth] = useState(initial?.month ?? 1)
+  const [year, setYear] = useState(initial?.year?.toString() ?? '')
+  const [month, setMonth] = useState(initial?.month?.toString() ?? '')
   const [coverModel, setCoverModel] = useState(initial?.cover_model ?? '')
   const [condition, setCondition] = useState<Magazine['condition']>(initial?.condition ?? 'Bom')
   const [acquired, setAcquired] = useState(initial?.acquired ?? true)
-  const [isPublic, setIsPublic] = useState(initial?.is_public ?? false)
+  const [isPublic, setIsPublic] = useState(initial?.is_public ?? true) // revista nova já entra no catálogo público
   const [cover, setCover] = useState<File | null>(null)
   const [coverError, setCoverError] = useState<string | null>(null)
   const [preview, setPreview] = useState<string | null>(null)
@@ -65,8 +65,9 @@ export function MagazineForm({ onSubmit, initial, onCancel }: MagazineFormProps)
     const saved = await onSubmit(
       {
         title: title.trim(),
-        year,
-        month,
+        // Campo vazio vira null ("não sei"); caso contrário, o número digitado.
+        year: year === '' ? null : Number(year),
+        month: month === '' ? null : Number(month),
         // null (e não undefined) para o banco LIMPAR o campo ao editar:
         // undefined some do envio, e o valor antigo ficaria no banco.
         cover_model: coverModel.trim() || null,
@@ -98,12 +99,12 @@ export function MagazineForm({ onSubmit, initial, onCancel }: MagazineFormProps)
 
       <div className="form__row">
         <label>
-          Mês
-          <input type="number" min={1} max={12} value={month} onChange={(e) => setMonth(Number(e.target.value))} />
+          Mês (opcional)
+          <input type="number" min={1} max={12} value={month} onChange={(e) => setMonth(e.target.value)} />
         </label>
         <label>
-          Ano
-          <input type="number" min={1953} max={2100} value={year} onChange={(e) => setYear(Number(e.target.value))} />
+          Ano (opcional)
+          <input type="number" min={1953} max={2100} value={year} onChange={(e) => setYear(e.target.value)} />
         </label>
       </div>
 
@@ -137,7 +138,7 @@ export function MagazineForm({ onSubmit, initial, onCancel }: MagazineFormProps)
 
       <label className="form__check">
         <input type="checkbox" checked={isPublic} onChange={(e) => setIsPublic(e.target.checked)} />
-        Mostrar no catálogo público
+        Mostrar no catálogo público (visível para qualquer pessoa)
       </label>
 
       <button type="submit" disabled={saving}>{saving ? 'Salvando...' : initial ? 'Salvar' : 'Adicionar'}</button>

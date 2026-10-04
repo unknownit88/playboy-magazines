@@ -3,8 +3,8 @@
 export interface Magazine {
   id: string
   title: string
-  year: number
-  month: number // 1 a 12
+  year: number | null // null = não sei o ano
+  month: number | null // 1 a 12, ou null
   cover_model?: string | null // o "?" significa que o campo é opcional
   condition: 'Excelente' | 'Bom' | 'Regular' | 'Ruim' // só estes 4 valores são aceitos
   acquired: boolean

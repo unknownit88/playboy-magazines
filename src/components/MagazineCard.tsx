@@ -24,9 +24,11 @@ export function MagazineCard({ magazine, onDelete, onEdit, onTogglePublic }: Mag
 
       <div className="card__body">
         <h2>{magazine.title}</h2>
-        <p className="card__date">
-          {String(magazine.month).padStart(2, '0')}/{magazine.year}
-        </p>
+        {magazine.year && (
+          <p className="card__date">
+            {magazine.month ? `${String(magazine.month).padStart(2, '0')}/` : ''}{magazine.year}
+          </p>
+        )}
         {magazine.cover_model && <p className="card__meta">Capa: {magazine.cover_model}</p>}
         <p className="card__meta">Condição: {magazine.condition}</p>
 
