@@ -1,9 +1,9 @@
-import type { Magazine } from '../types'
+import type { Condition, Magazine } from '../types'
 
 // Os filtros escolhidos pelo usuário. É SÓ isto que guardamos em estado.
 export interface Filters {
   search: string
-  condition: 'todas' | Magazine['condition']
+  condition: 'todas' | Condition
   status: 'todas' | 'colecao' | 'procurando'
   sort: 'recentes' | 'ano-desc' | 'ano-asc' | 'titulo'
 }

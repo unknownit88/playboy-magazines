@@ -30,7 +30,7 @@ export function MagazineCard({ magazine, onDelete, onEdit, onTogglePublic }: Mag
           </p>
         )}
         {magazine.cover_model && <p className="card__meta">Capa: {magazine.cover_model}</p>}
-        <p className="card__meta">Condição: {magazine.condition}</p>
+        {magazine.condition && <p className="card__meta">Condição: {magazine.condition}</p>}
 
         <div className="card__badges">
           <span className="badge">{magazine.acquired ? 'Na coleção' : 'Procurando'}</span>

@@ -1,3 +1,6 @@
+// As condições que o usuário pode ESCOLHER (nos filtros e no formulário).
+export type Condition = 'Excelente' | 'Bom' | 'Regular' | 'Ruim'
+
 // Descreve o "formato" de uma revista.
 // O TypeScript usa isso para avisar se esquecermos um campo ou errarmos um nome.
 export interface Magazine {
@@ -6,7 +9,7 @@ export interface Magazine {
   year: number | null // null = não sei o ano
   month: number | null // 1 a 12, ou null
   cover_model?: string | null // o "?" significa que o campo é opcional
-  condition: 'Excelente' | 'Bom' | 'Regular' | 'Ruim' // só estes 4 valores são aceitos
+  condition: Condition | null // null = condição não informada (o acervo importado não tem)
   acquired: boolean
   is_public: boolean // true = aparece no catálogo público
   cover_image_url?: string | null // endereço da imagem da capa (o banco devolve null se não houver)

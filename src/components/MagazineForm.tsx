@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import type { Magazine } from '../types'
+import type { Condition, Magazine } from '../types'
 import type { NewMagazine } from '../lib/magazineService'
 
 const MAX_COVER_MB = 5
@@ -13,7 +13,7 @@ interface MagazineFormProps {
   onCancel?: () => void
 }
 
-const conditions: Magazine['condition'][] = ['Excelente', 'Bom', 'Regular', 'Ruim']
+const conditions: Condition[] = ['Excelente', 'Bom', 'Regular', 'Ruim']
 
 export function MagazineForm({ onSubmit, initial, onCancel }: MagazineFormProps) {
   // Cada campo do formulário é um estado: quando muda, a tela é redesenhada.
@@ -21,7 +21,7 @@ export function MagazineForm({ onSubmit, initial, onCancel }: MagazineFormProps)
   const [year, setYear] = useState(initial?.year?.toString() ?? '')
   const [month, setMonth] = useState(initial?.month?.toString() ?? '')
   const [coverModel, setCoverModel] = useState(initial?.cover_model ?? '')
-  const [condition, setCondition] = useState<Magazine['condition']>(initial?.condition ?? 'Bom')
+  const [condition, setCondition] = useState<Condition>(initial?.condition ?? 'Bom')
   const [acquired, setAcquired] = useState(initial?.acquired ?? true)
   const [isPublic, setIsPublic] = useState(initial?.is_public ?? true) // revista nova já entra no catálogo público
   const [cover, setCover] = useState<File | null>(null)
@@ -124,7 +124,7 @@ export function MagazineForm({ onSubmit, initial, onCancel }: MagazineFormProps)
 
       <label>
         Condição
-        <select value={condition} onChange={(e) => setCondition(e.target.value as Magazine['condition'])}>
+        <select value={condition} onChange={(e) => setCondition(e.target.value as Condition)}>
           {conditions.map((c) => (
             <option key={c} value={c}>{c}</option>
           ))}
