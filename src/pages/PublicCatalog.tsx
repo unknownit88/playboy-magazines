@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { MagazineCard } from '../components/MagazineCard'
-import { listPublicMagazines } from '../lib/magazineService'
 import { CatalogFilters } from '../components/CatalogFilters'
+import { listPublicMagazines } from '../lib/magazineService'
 import { applyFilters, defaultFilters, type Filters } from '../lib/filters'
 import type { Magazine } from '../types'
 
@@ -19,14 +19,23 @@ export function PublicCatalog() {
   }, [])
 
   return (
-    <>
+    <div className="container">
+      <header className="page-head">
+        <p className="eyebrow">Acervo aberto</p>
+        <h1>Catálogo público</h1>
+      </header>
+
       <p className="subtitle">{visibleMagazines.length} de {magazines.length} revistas públicas</p>
-      <CatalogFilters filters={filters} onChange={setFilters} showStatus={false} />
       {error && <p className="form__error">Erro: {error}</p>}
+
+      <CatalogFilters filters={filters} onChange={setFilters} showStatus={false} />
+
+      {magazines.length === 0 && !error && <p className="subtitle">Nenhuma revista pública ainda.</p>}
+
       <div className="grid">
         {/* sem onDelete nem onTogglePublic: o card aparece só para leitura */}
         {visibleMagazines.map((m) => <MagazineCard key={m.id} magazine={m} />)}
       </div>
-    </>
+    </div>
   )
 }

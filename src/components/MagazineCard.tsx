@@ -11,31 +11,44 @@ interface MagazineCardProps {
 }
 
 export function MagazineCard({ magazine, onDelete, onEdit, onTogglePublic }: MagazineCardProps) {
+  const hasActions = onTogglePublic || onEdit || onDelete
+
   return (
     <article className={magazine.acquired ? 'card' : 'card card--missing'}>
-      {magazine.cover_image_url && (
+      {magazine.cover_image_url ? (
         // loading="lazy": o navegador só baixa a imagem quando ela está perto de aparecer
         <img className="card__cover" src={magazine.cover_image_url} alt={`Capa de ${magazine.title}`} loading="lazy" />
+      ) : (
+        <div className="card__cover card__cover--empty">Sem capa</div>
       )}
-      <h2>{magazine.title}</h2>
-      <p className="card__date">
-        {String(magazine.month).padStart(2, '0')}/{magazine.year}
-      </p>
-      {magazine.cover_model && <p>Capa: {magazine.cover_model}</p>}
-      <p>Condição: {magazine.condition}</p>
-      <span className="card__badge">{magazine.acquired ? 'Na coleção' : 'Procurando'}</span>
-      {magazine.is_public && <span className="card__badge">Pública</span>}
-      {onTogglePublic && (
-        <button className="card__action" onClick={() => onTogglePublic(magazine)}>
-          {magazine.is_public ? 'Tornar privada' : 'Tornar pública'}
-        </button>
-      )}
-      {onEdit && (
-        <button className="card__action" onClick={() => onEdit(magazine)}>Editar</button>
-      )}
-      {onDelete && (
-        <button className="card__action" onClick={() => onDelete(magazine.id)}>Deletar</button>
-      )}
+
+      <div className="card__body">
+        <h2>{magazine.title}</h2>
+        <p className="card__date">
+          {String(magazine.month).padStart(2, '0')}/{magazine.year}
+        </p>
+        {magazine.cover_model && <p className="card__meta">Capa: {magazine.cover_model}</p>}
+        <p className="card__meta">Condição: {magazine.condition}</p>
+
+        <div className="card__badges">
+          <span className="badge">{magazine.acquired ? 'Na coleção' : 'Procurando'}</span>
+          {magazine.is_public && <span className="badge badge--on">Pública</span>}
+        </div>
+
+        {hasActions && (
+          <div className="card__actions">
+            {onTogglePublic && (
+              <button className="card__action" onClick={() => onTogglePublic(magazine)}>
+                {magazine.is_public ? 'Tornar privada' : 'Tornar pública'}
+              </button>
+            )}
+            {onEdit && <button className="card__action" onClick={() => onEdit(magazine)}>Editar</button>}
+            {onDelete && (
+              <button className="card__action btn--danger" onClick={() => onDelete(magazine.id)}>Deletar</button>
+            )}
+          </div>
+        )}
+      </div>
     </article>
   )
 }

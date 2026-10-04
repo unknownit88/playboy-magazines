@@ -1,40 +1,147 @@
-.container { max-width: 960px; margin: 0 auto; padding: 2rem 1rem; }
-.subtitle { color: #888; margin-bottom: 2rem; }
-.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; }
-.card { border: 1px solid #444; border-radius: 8px; padding: 1rem; text-align: left; }
-.card--missing { opacity: 0.55; border-style: dashed; }
-.card h2 { font-size: 1.1rem; margin: 0 0 0.25rem; }
-.card p { margin: 0.25rem 0; }
-.card__date { color: #888; }
-.card__badge { display: inline-block; margin-top: 0.5rem; padding: 0.15rem 0.6rem; border-radius: 999px; background: #333; font-size: 0.8rem; }
+/* ---------- Cabeçalho e navegação ---------- */
+.site-header {
+  position: sticky; top: 0; z-index: 10;
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem 1.5rem;
+  min-height: var(--header-h);
+  padding: 0 clamp(1rem, 4vw, 3rem);
+  background: rgba(10, 10, 10, 0.85);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+}
+.brand { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase; color: var(--text); text-decoration: none; }
+.nav { display: flex; gap: 1.75rem; }
+.nav a {
+  padding: 0.35rem 0; border-bottom: 1px solid transparent;
+  font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--muted); text-decoration: none;
+  transition: color 0.2s, border-color 0.2s;
+}
+.nav a:hover { color: var(--text); }
+.nav a.active { color: var(--text); border-bottom-color: var(--text); }
 
-.form { display: grid; gap: 0.75rem; max-width: 420px; margin-bottom: 2rem; padding: 1rem; border: 1px solid #444; border-radius: 8px; text-align: left; }
-.form h2 { margin: 0; font-size: 1.1rem; }
-.form label { display: grid; gap: 0.25rem; font-size: 0.9rem; }
-.form input:not([type=checkbox]), .form select { padding: 0.4rem; font-size: 1rem; }
-.form__row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
-.form__check { display: flex !important; align-items: center; gap: 0.5rem; }
-.card__action { display: block; margin-top: 0.75rem; font-size: 0.8rem; cursor: pointer; }
+/* ---------- Botões (todos os <button> e links com .btn) ---------- */
+button, .btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem;
+  padding: 0.7rem 1.4rem;
+  border: 1px solid var(--border-strong); border-radius: var(--radius);
+  background: transparent; color: var(--text); /* sem o color, links <a> ficam com a cor padrão do navegador */
+  font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+button:hover, .btn:hover { background: var(--text); border-color: var(--text); color: var(--bg); }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn--small { padding: 0.4rem 0.75rem; font-size: 0.68rem; letter-spacing: 0.12em; }
+.btn--danger, .dialog__danger { border-color: #5a2427; color: var(--danger-text); }
+.btn--danger:hover, .dialog__danger:hover { background: var(--danger); border-color: var(--danger); color: #fff; }
 
-.overlay { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0, 0, 0, 0.6); }
-.dialog { min-width: 280px; max-height: 90vh; overflow-y: auto; padding: 1.5rem; border-radius: 10px; background: #1f2028; color: #f3f4f6; text-align: center; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); }
-.dialog__actions { display: flex; justify-content: center; gap: 0.75rem; margin-top: 1rem; }
-.dialog__danger { background: #b3261e; color: #fff; }
+/* ---------- Página inicial (hero) ---------- */
+.hero {
+  min-height: calc(100svh - var(--header-h));
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.5rem;
+  padding: 3rem 1.5rem; text-align: center;
+  background: radial-gradient(ellipse at 50% 25%, #1a1a1a 0%, var(--bg) 62%);
+}
+.hero__eyebrow { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.4em; text-transform: uppercase; color: var(--muted); }
+.hero__title {
+  font-size: clamp(3rem, 13vw, 9rem); font-weight: 900; line-height: 0.95;
+  letter-spacing: -0.03em; text-transform: uppercase; text-wrap: balance;
+  /* Truque do texto com degradê: pinta o fundo e recorta no formato das letras. */
+  background: linear-gradient(180deg, #ffffff 20%, #6b6b6b 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.hero__text { max-width: 34rem; color: var(--muted); }
+.hero__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem; margin-top: 0.5rem; }
 
-.form__error { margin: 0; color: #ff6b6b; font-size: 0.9rem; }
-.form__link { background: none; border: none; color: #aa3bff; cursor: pointer; text-decoration: underline; }
-.container > .form { margin-left: auto; margin-right: auto; }
+/* ---------- Páginas internas ---------- */
+.container { max-width: 1200px; margin: 0 auto; padding: 2.5rem clamp(1rem, 4vw, 3rem) 4rem; }
+.page-head { margin-bottom: 2rem; }
+.eyebrow { margin-bottom: 0.5rem; font-size: 0.72rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--muted); }
+.page-head h1 { font-size: clamp(1.8rem, 5vw, 3rem); font-weight: 800; letter-spacing: -0.02em; }
+.subtitle { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; margin-bottom: 1rem; font-size: 0.9rem; color: var(--muted); }
+.auth { max-width: 420px; margin: 2rem auto 0; padding: 1.75rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
 
-.nav { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 1.5rem; }
-.nav a { color: inherit; text-decoration: none; padding-bottom: 0.2rem; }
-.nav a.active { border-bottom: 2px solid #aa3bff; }
+/* ---------- Grade e cards ---------- */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 1.5rem; }
+.card {
+  display: flex; flex-direction: column; overflow: hidden;
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  transition: border-color 0.2s, transform 0.2s;
+}
+.card:hover { border-color: var(--border-strong); transform: translateY(-2px); }
+.card--missing { border-style: dashed; opacity: 0.65; }
+.card__cover { display: block; width: 100%; aspect-ratio: 3 / 4; object-fit: cover; }
+.card__cover--empty {
+  display: flex; align-items: center; justify-content: center;
+  background: var(--surface-2); color: var(--muted);
+  font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase;
+}
+.card__body { display: flex; flex: 1; flex-direction: column; gap: 0.35rem; padding: 1rem; }
+.card__body h2 { font-size: 0.95rem; font-weight: 600; }
+.card__date { font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+.card__meta { font-size: 0.85rem; color: var(--muted); }
+.card__badges { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.4rem; }
+.badge {
+  padding: 0.2rem 0.6rem; border: 1px solid var(--border-strong); border-radius: 999px;
+  font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted);
+}
+.badge--on { border-color: var(--text); color: var(--text); }
+.card__actions { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: auto; padding-top: 0.85rem; }
+.card__action { padding: 0.4rem 0.7rem; font-size: 0.65rem; letter-spacing: 0.12em; }
 
-.card__cover { display: block; width: 100%; aspect-ratio: 3 / 4; object-fit: cover; border-radius: 6px; margin-bottom: 0.75rem; }
-.form__preview { max-width: 120px; border-radius: 6px; }
+/* ---------- Formulários ---------- */
+.panel { margin-bottom: 1.5rem; padding: 1rem 1.25rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
+.panel > summary { cursor: pointer; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; }
+.panel[open] > summary { margin-bottom: 1.25rem; }
+.panel .form h2 { display: none; } /* o <summary> já serve de título */
+.form { display: grid; gap: 1rem; max-width: 520px; text-align: left; }
+.form h2 { font-size: 1.1rem; font-weight: 600; }
+label { display: grid; gap: 0.4rem; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
+input:not([type='checkbox']):not([type='file']), select {
+  width: 100%; padding: 0.6rem 0.75rem;
+  background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius);
+  font-size: 0.95rem; letter-spacing: normal; text-transform: none; color: var(--text);
+}
+input:not([type='checkbox']):focus, select:focus { border-color: var(--text); outline: none; }
+input[type='file'] { font-size: 0.85rem; letter-spacing: normal; text-transform: none; }
+input[type='checkbox'] { width: 1rem; height: 1rem; accent-color: #ffffff; }
+.form__row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.form__check { display: flex; align-items: center; gap: 0.6rem; font-size: 0.9rem; letter-spacing: normal; text-transform: none; color: var(--text); }
+.form__error { font-size: 0.9rem; color: var(--danger-text); }
+.form__link { padding: 0; border: none; font-size: 0.85rem; letter-spacing: normal; text-transform: none; text-decoration: underline; color: var(--muted); }
+.form__link:hover { background: none; color: var(--text); }
+.form__preview { width: 120px; aspect-ratio: 3 / 4; object-fit: cover; border-radius: var(--radius); }
 
-.filters { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin-bottom: 1.5rem; }
-.filters input[type=search] { flex: 1 1 220px; max-width: 320px; }
-.filters input, .filters select { padding: 0.4rem; font-size: 0.95rem; }
+/* ---------- Filtros ---------- */
+.filters { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 2rem; }
+.filters input[type='search'] { flex: 1 1 240px; width: auto; }
+.filters select { flex: 0 1 auto; width: auto; }
 
-/* Dentro da janela, o formulário não precisa de moldura própria */
-.dialog .form { border: none; margin: 0; padding: 0; max-width: none; }
+/* ---------- Janelas (modal) ---------- */
+.overlay {
+  position: fixed; inset: 0; z-index: 20;
+  display: flex; align-items: center; justify-content: center; padding: 1rem;
+  background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(4px);
+}
+.dialog {
+  width: min(100%, 520px); max-height: 90vh; overflow-y: auto; padding: 1.75rem;
+  background: var(--surface); border: 1px solid var(--border-strong); border-radius: var(--radius);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+}
+.dialog > p { margin-bottom: 1.25rem; text-align: center; }
+.dialog__actions { display: flex; justify-content: center; gap: 0.75rem; }
+
+/* ---------- Telas pequenas ---------- */
+@media (max-width: 560px) {
+  .brand { letter-spacing: 0.2em; }
+  .nav { gap: 1rem; }
+  .nav a { letter-spacing: 0.12em; }
+  .form__row { grid-template-columns: 1fr; }
+  .grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; }
+}
+
+/* Respeita quem desativou animações no sistema. */
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+  .card:hover { transform: none; }
+}

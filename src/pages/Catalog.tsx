@@ -104,26 +104,39 @@ export function Catalog() {
   // ESTADO DERIVADO: não é useState. É recalculado a cada desenho, a partir de dois estados.
   const visibleMagazines = applyFilters(magazines, filters)
 
-  if (loading) return <main className="container"><p>Carregando...</p></main>
+  if (loading) return <div className="container"><p className="subtitle">Carregando...</p></div>
   if (!session) {
     return (
-      <main className="container">
-        <AuthForm />
-      </main>
+      <div className="container">
+        <header className="page-head">
+          <p className="eyebrow">Área restrita</p>
+          <h1>Minha coleção</h1>
+        </header>
+        <div className="auth"><AuthForm /></div>
+      </div>
     )
   }
 
   return (
-    <main className="container">
+    <div className="container">
+      <header className="page-head">
+        <p className="eyebrow">Acervo pessoal</p>
+        <h1>Minha coleção</h1>
+      </header>
+
       <p className="subtitle">
-        Logado como {session.user.email}{' '}
-        <button onClick={() => supabase.auth.signOut()}>Sair</button>
+        Logado como {session.user.email}
+        <button className="btn--small" onClick={() => supabase.auth.signOut()}>Sair</button>
       </p>
       <p className="subtitle">{visibleMagazines.length} de {magazines.length} revistas</p>
 
       {error && <p className="form__error">Erro: {error}</p>}
 
-      <MagazineForm onSubmit={handleAdd} />
+      {/* <details> é um recurso nativo do HTML: abre e fecha sozinho, sem JavaScript */}
+      <details className="panel">
+        <summary>+ Nova revista</summary>
+        <MagazineForm onSubmit={handleAdd} />
+      </details>
 
       <CatalogFilters filters={filters} onChange={setFilters} />
 
@@ -151,6 +164,6 @@ export function Catalog() {
           onCancel={() => setPendingDeleteId(null)}
         />
       )}
-    </main>
+    </div>
   )
 }
