@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { supabase } from '../lib/supabase'
 
+// Só login: o cadastro de novas contas está fechado no Supabase
+// (Authentication → Sign In / Providers → "Allow new users to sign up").
+// Quem só quer ver o acervo usa o catálogo público, que não precisa de conta.
 export function AuthForm() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [mode, setMode] = useState<'login' | 'signup'>('login')
   const [message, setMessage] = useState<string | null>(null)
   const [busy, setBusy] = useState(false) // evita clicar duas vezes enquanto espera
 
@@ -13,11 +15,7 @@ export function AuthForm() {
     setBusy(true)
     setMessage(null)
 
-    // As duas funções devolvem { error }. Se error for null, deu certo.
-    const { error } =
-      mode === 'login'
-        ? await supabase.auth.signInWithPassword({ email, password })
-        : await supabase.auth.signUp({ email, password })
+    const { error } = await supabase.auth.signInWithPassword({ email, password })
 
     if (error) setMessage(error.message)
     // Se deu certo não precisamos fazer nada: o useSession percebe sozinho
@@ -27,27 +25,21 @@ export function AuthForm() {
 
   return (
     <form className="form" onSubmit={handleSubmit}>
-      <h2>{mode === 'login' ? 'Entrar' : 'Criar conta'}</h2>
+      <h2>Entrar</h2>
 
       <label>
         Email
-        <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
+        <input type="email" required autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} />
       </label>
 
       <label>
-        Senha (mínimo 6 caracteres)
-        <input type="password" required minLength={6} value={password} onChange={(e) => setPassword(e.target.value)} />
+        Senha
+        <input type="password" required autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} />
       </label>
 
       {message && <p className="form__error">{message}</p>}
 
-      <button type="submit" disabled={busy}>
-        {busy ? 'Aguarde...' : mode === 'login' ? 'Entrar' : 'Cadastrar'}
-      </button>
-
-      <button type="button" className="form__link" onClick={() => setMode(mode === 'login' ? 'signup' : 'login')}>
-        {mode === 'login' ? 'Não tenho conta' : 'Já tenho conta'}
-      </button>
+      <button type="submit" disabled={busy}>{busy ? 'Aguarde...' : 'Entrar'}</button>
     </form>
   )
 }
