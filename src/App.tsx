@@ -3,11 +3,13 @@ import { Catalog } from './pages/Catalog'
 import { Home } from './pages/Home'
 import { NotFound } from './pages/NotFound'
 import { PublicCatalog } from './pages/PublicCatalog'
+import { AgeGate } from './components/AgeGate'
 import './App.css'
 
 function App() {
   return (
     <BrowserRouter>
+      <AgeGate />
       <header className="site-header">
         <Link to="/" className="brand">PLAYBOY BRASIL</Link>
         <nav className="nav" aria-label="Principal">

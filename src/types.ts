@@ -6,6 +6,7 @@ export type Condition = 'Excelente' | 'Bom' | 'Regular' | 'Ruim'
 export interface Magazine {
   id: string
   title: string
+  issue?: string | null // número da edição, ex.: "293"
   year: number | null // null = não sei o ano
   month: number | null // 1 a 12, ou null
   cover_model?: string | null // o "?" significa que o campo é opcional

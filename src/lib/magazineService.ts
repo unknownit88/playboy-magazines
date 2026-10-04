@@ -86,11 +86,12 @@ export async function deleteMagazine(magazine: Magazine): Promise<void> {
 }
 
 // Para o catálogo público: funciona SEM login, o RLS já limita a is_public = true.
+// Lê da VIEW public_magazines, que não expõe user_id nem notas privadas.
+// (a view já filtra is_public = true, então não repetimos o filtro aqui)
 export async function listPublicMagazines(): Promise<Magazine[]> {
   const { data, error } = await supabase
-    .from('magazines')
+    .from('public_magazines')
     .select('*')
-    .eq('is_public', true)
     .order('created_at', { ascending: false })
 
   if (error) throw error

@@ -24,9 +24,12 @@ export function MagazineCard({ magazine, onDelete, onEdit, onTogglePublic }: Mag
 
       <div className="card__body">
         <h2>{magazine.title}</h2>
-        {magazine.year && (
+        {(magazine.issue || magazine.year) && (
           <p className="card__date">
-            {magazine.month ? `${String(magazine.month).padStart(2, '0')}/` : ''}{magazine.year}
+            {[
+              magazine.issue && `Nº ${magazine.issue}`,
+              magazine.year && `${magazine.month ? `${String(magazine.month).padStart(2, '0')}/` : ''}${magazine.year}`,
+            ].filter(Boolean).join(' · ')}
           </p>
         )}
         {magazine.cover_model && <p className="card__meta">Capa: {magazine.cover_model}</p>}
