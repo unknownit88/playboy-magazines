@@ -8,6 +8,7 @@ import { useSession } from '../hooks/useSession'
 import { supabase } from '../lib/supabase'
 import { addMagazine, deleteMagazine, listMyMagazines, removeCover, setMagazinePublic, updateMagazine, uploadCover, type NewMagazine } from '../lib/magazineService'
 import { CatalogFilters } from '../components/CatalogFilters'
+import { BulkImport } from '../components/BulkImport'
 import { MagazineGallery } from '../components/MagazineGallery'
 import { ViewModeToggle } from '../components/ViewModeToggle'
 import { useViewMode } from '../hooks/useViewMode'
@@ -140,6 +141,16 @@ export function Catalog() {
       <details className="panel">
         <summary>+ Nova revista</summary>
         <MagazineForm onSubmit={handleAdd} />
+      </details>
+
+      <details className="panel">
+        <summary>+ Importar várias capas</summary>
+        {/* O lote novo entra na frente da lista, sem precisar recarregar do banco */}
+        <BulkImport
+          userId={session.user.id}
+          existing={magazines}
+          onImported={(created) => setMagazines((current) => [...created, ...current])}
+        />
       </details>
 
       <div className="toolbar">
