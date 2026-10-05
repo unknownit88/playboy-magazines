@@ -31,7 +31,6 @@ export function PublicCatalog() {
 
       <p className="subtitle">{visibleMagazines.length} de {magazines.length} revistas públicas</p>
       {error && <p className="form__error">Erro: {error}</p>}
-
       <div className="toolbar">
         <CatalogFilters filters={filters} onChange={setFilters} showStatus={false} />
         <ViewModeToggle mode={viewMode} onChange={setViewMode} />
