@@ -26,7 +26,7 @@ export function PublicCatalog() {
     <div className="container">
       <header className="page-head">
         <p className="eyebrow">Acervo aberto</p>
-        <h1>Catálogo público</h1>
+        <h1></h1>
       </header>
 
       <p className="subtitle">{visibleMagazines.length} de {magazines.length} revistas públicas</p>
