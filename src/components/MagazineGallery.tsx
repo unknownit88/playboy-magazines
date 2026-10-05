@@ -36,8 +36,9 @@ export function MagazineGallery({ mode, children }: MagazineGalleryProps) {
     el.scrollBy({ left: direction * el.clientWidth * 0.9, behavior: reduceMotion ? 'auto' : 'smooth' })
   }
 
-  if (mode === 'vertical') {
-    return <div className="gallery gallery--vertical">{children}</div>
+  if (mode === 'vertical' || mode === 'mosaico') {
+    // Os dois são grades que rolam para baixo: mudam só as classes de CSS (colunas e tamanho das capas).
+    return <div className={`gallery gallery--${mode}`}>{children}</div>
   }
 
   return (

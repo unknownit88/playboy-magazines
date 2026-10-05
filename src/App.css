@@ -70,7 +70,8 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
 
 /* Controle segmentado: dois botões colados, só um ativo */
 .segmented { display: inline-flex; padding: 0.2rem; border: 1px solid var(--border-strong); border-radius: 999px; }
-.segmented button { border: none; padding: 0.4rem 0.9rem; }
+.segmented button { border: none; padding: 0.45rem 0.8rem; }
+.segmented svg { display: block; width: 1.15rem; height: 1.15rem; }
 .segmented button:hover { background: var(--surface-2); color: var(--text); }
 .segmented button[aria-pressed='true'] { background: var(--text); color: var(--bg); }
 
@@ -93,7 +94,8 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
 .gallery__scroller > .card { flex: 0 0 clamp(230px, 26vw, 445px); scroll-snap-align: start; }
 
 /* ---------- Card (capa grande, texto simples embaixo) ---------- */
-.card { display: flex; flex-direction: column; gap: 0.3rem; min-width: 0; }
+.card { display: flex; flex-direction: column; min-width: 0; }
+.card__info { display: flex; flex-direction: column; gap: 0.3rem; }
 .card__media { aspect-ratio: 3 / 4; overflow: hidden; background: var(--placeholder); }
 .card__cover { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
 .card:hover .card__cover { transform: scale(1.025); }
@@ -184,3 +186,24 @@ input[type='checkbox'] { width: 1rem; height: 1rem; accent-color: var(--text); }
 .bulk__fields { display: grid; gap: 0.25rem; min-width: 0; }
 .bulk__fields input { padding: 0.4rem 0.6rem; font-size: 0.9rem; }
 .bulk__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; }
+
+/* ---------- Mosaico: capas pequenas e coladas, texto sobre a imagem ---------- */
+.gallery--mosaico { display: grid; grid-template-columns: repeat(auto-fill, minmax(clamp(105px, 11vw, 170px), 1fr)); gap: 6px; }
+.gallery--mosaico .card { position: relative; }
+.gallery--mosaico .card:hover .card__cover { transform: none; }
+.gallery--mosaico .card__info {
+  position: absolute; inset: auto 0 0 0; gap: 0.15rem;
+  padding: 2rem 0.5rem 0.5rem;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.88));
+  opacity: 0; transition: opacity 0.2s;
+}
+.gallery--mosaico .card:hover .card__info, .gallery--mosaico .card:focus-within .card__info { opacity: 1; }
+/* Em telas de toque não existe "passar o mouse": o texto fica sempre visível. */
+@media (hover: none) { .gallery--mosaico .card__info { opacity: 1; } }
+/* O texto está sobre uma foto: usa branco fixo, qualquer que seja o tema. */
+.gallery--mosaico .card__title { margin: 0; font-size: 0.7rem; color: #fff; }
+.gallery--mosaico .card__meta, .gallery--mosaico .tag { font-size: 0.62rem; color: rgba(255, 255, 255, 0.85); }
+.gallery--mosaico .tag--accent { color: #ff9db3; }
+.gallery--mosaico .card__actions { margin-top: 0.3rem; padding: 0; opacity: 1; }
+.gallery--mosaico .card__actions button { padding: 0.25rem 0.55rem; font-size: 0.55rem; color: #fff; border-color: rgba(255, 255, 255, 0.55); }
+.gallery--mosaico .card__actions button:hover { background: #fff; border-color: #fff; color: #000; }

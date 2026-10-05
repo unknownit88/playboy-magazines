@@ -29,28 +29,30 @@ export function MagazineCard({ magazine, onDelete, onEdit, onTogglePublic }: Mag
         )}
       </div>
 
-      <h2 className="card__title">{magazine.title}</h2>
-      {meta && <p className="card__meta">{meta}</p>}
-      {magazine.cover_model && <p className="card__meta">Capa: {magazine.cover_model}</p>}
-      {magazine.condition && <p className="card__meta">Condição: {magazine.condition}</p>}
+      <div className="card__info">
+        <h2 className="card__title">{magazine.title}</h2>
+        {meta && <p className="card__meta">{meta}</p>}
+        {magazine.cover_model && <p className="card__meta">Capa: {magazine.cover_model}</p>}
+        {magazine.condition && <p className="card__meta">Condição: {magazine.condition}</p>}
 
-      {/* Só mostra etiqueta quando ela INFORMA algo: "Procurando" e, para o dono, "Pública". */}
-      {(!magazine.acquired || (isOwnerView && magazine.is_public)) && (
-        <p className="card__tags">
-          {!magazine.acquired && <span className="tag">Procurando</span>}
-          {isOwnerView && magazine.is_public && <span className="tag tag--accent">Pública</span>}
-        </p>
-      )}
+        {/* Só mostra etiqueta quando ela INFORMA algo: "Procurando" e, para o dono, "Pública". */}
+        {(!magazine.acquired || (isOwnerView && magazine.is_public)) && (
+          <p className="card__tags">
+            {!magazine.acquired && <span className="tag">Procurando</span>}
+            {isOwnerView && magazine.is_public && <span className="tag tag--accent">Pública</span>}
+          </p>
+        )}
 
-      {isOwnerView && (
-        <div className="card__actions">
-          {onTogglePublic && (
-            <button onClick={() => onTogglePublic(magazine)}>{magazine.is_public ? 'Tornar privada' : 'Tornar pública'}</button>
-          )}
-          {onEdit && <button onClick={() => onEdit(magazine)}>Editar</button>}
-          {onDelete && <button className="btn--danger" onClick={() => onDelete(magazine.id)}>Deletar</button>}
-        </div>
-      )}
+        {isOwnerView && (
+          <div className="card__actions">
+            {onTogglePublic && (
+              <button onClick={() => onTogglePublic(magazine)}>{magazine.is_public ? 'Tornar privada' : 'Tornar pública'}</button>
+            )}
+            {onEdit && <button onClick={() => onEdit(magazine)}>Editar</button>}
+            {onDelete && <button className="btn--danger" onClick={() => onDelete(magazine.id)}>Deletar</button>}
+          </div>
+        )}
+      </div>
     </article>
   )
 }

@@ -1,12 +1,16 @@
 import { useState } from 'react'
 
-// vertical = grade que rola para baixo; horizontal = fileira que rola para os lados.
-export type ViewMode = 'vertical' | 'horizontal'
+// vertical = grade que rola para baixo; horizontal = fileira que rola para os lados;
+// mosaico = capas pequenas e coladas, com o texto sobre a imagem.
+export type ViewMode = 'vertical' | 'horizontal' | 'mosaico'
+const MODES: ViewMode[] = ['vertical', 'horizontal', 'mosaico']
 const STORAGE_KEY = 'modo-visualizacao'
 
 function readMode(): ViewMode {
   try {
-    return localStorage.getItem(STORAGE_KEY) === 'horizontal' ? 'horizontal' : 'vertical'
+    const saved = localStorage.getItem(STORAGE_KEY)
+    // Só aceita um valor conhecido: se alguém mexer no armazenamento, voltamos ao padrão.
+    return MODES.find((mode) => mode === saved) ?? 'vertical'
   } catch {
     return 'vertical'
   }
