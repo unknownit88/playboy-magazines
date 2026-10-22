@@ -45,7 +45,7 @@ export function PublicCatalog() {
         {visibleMagazines.map((m) => <MagazineCard key={m.id} magazine={m} onOpenCover={viewMode === 'mosaico' ? setZoomed : undefined} />)}
       </MagazineGallery>
 
-      {zoomed && <CoverLightbox magazine={zoomed} onClose={() => setZoomed(null)} />}
+      {zoomed && <CoverLightbox magazine={zoomed} magazines={visibleMagazines} onChange={setZoomed} onClose={() => setZoomed(null)} />}
     </div>
   )
 }

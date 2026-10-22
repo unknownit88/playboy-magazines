@@ -220,7 +220,7 @@ export function Catalog() {
         ))}
       </MagazineGallery>
 
-      {zoomed && <CoverLightbox magazine={zoomed} onClose={() => setZoomed(null)} />}
+      {zoomed && <CoverLightbox magazine={zoomed} magazines={visibleMagazines} onChange={setZoomed} onClose={() => setZoomed(null)} />}
 
       {editingMagazine && (
         <Modal onClose={() => setEditingId(null)}>
