@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { MagazineCard } from '../components/MagazineCard'
 import { CatalogFilters } from '../components/CatalogFilters'
 import { MagazineGallery } from '../components/MagazineGallery'
+import { CoverLightbox } from '../components/CoverLightbox'
 import { ViewModeToggle } from '../components/ViewModeToggle'
 import { useViewMode } from '../hooks/useViewMode'
 import { listPublicMagazines } from '../lib/magazineService'
@@ -14,6 +15,7 @@ export function PublicCatalog() {
   const [error, setError] = useState<string | null>(null)
   const [filters, setFilters] = useState<Filters>(defaultFilters)
   const [viewMode, setViewMode] = useViewMode()
+  const [zoomed, setZoomed] = useState<Magazine | null>(null) // capa aberta em tamanho grande
   const visibleMagazines = applyFilters(magazines, filters)
 
   useEffect(() => {
@@ -40,8 +42,10 @@ export function PublicCatalog() {
 
       <MagazineGallery mode={viewMode}>
         {/* sem onDelete nem onTogglePublic: o card aparece só para leitura */}
-        {visibleMagazines.map((m) => <MagazineCard key={m.id} magazine={m} />)}
+        {visibleMagazines.map((m) => <MagazineCard key={m.id} magazine={m} onOpenCover={viewMode === 'mosaico' ? setZoomed : undefined} />)}
       </MagazineGallery>
+
+      {zoomed && <CoverLightbox magazine={zoomed} onClose={() => setZoomed(null)} />}
     </div>
   )
 }

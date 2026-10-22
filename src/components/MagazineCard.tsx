@@ -8,9 +8,11 @@ interface MagazineCardProps {
   onDelete?: (id: string) => void
   onEdit?: (magazine: Magazine) => void
   onTogglePublic?: (magazine: Magazine) => void
+  // Se vier, clicar na capa chama esta função (usada no mosaico para abrir a foto inteira).
+  onOpenCover?: (magazine: Magazine) => void
 }
 
-export function MagazineCard({ magazine, onDelete, onEdit, onTogglePublic }: MagazineCardProps) {
+export function MagazineCard({ magazine, onDelete, onEdit, onTogglePublic, onOpenCover }: MagazineCardProps) {
   const isOwnerView = Boolean(onTogglePublic || onEdit || onDelete)
 
   const date = magazine.year
@@ -23,7 +25,14 @@ export function MagazineCard({ magazine, onDelete, onEdit, onTogglePublic }: Mag
       <div className="card__media">
         {magazine.cover_image_url ? (
           // loading="lazy": o navegador só baixa a imagem quando ela está perto de aparecer
-          <img className="card__cover" src={magazine.cover_image_url} alt={`Capa de ${magazine.title}`} loading="lazy" />
+          onOpenCover ? (
+            // <button>: dá para focar com Tab e abrir com Enter, não só com o mouse
+            <button type="button" className="card__zoom" aria-label={`Ver a capa inteira de ${magazine.title}`} onClick={() => onOpenCover(magazine)}>
+              <img className="card__cover" src={magazine.cover_image_url} alt="" loading="lazy" />
+            </button>
+          ) : (
+            <img className="card__cover" src={magazine.cover_image_url} alt={`Capa de ${magazine.title}`} loading="lazy" />
+          )
         ) : (
           <div className="card__placeholder">Sem capa</div>
         )}
